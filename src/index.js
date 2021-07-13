@@ -6,11 +6,34 @@ const promisify = require('util').promisify;
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
+/**
+ * Topology API library class
+ * 
+ * @author Abdelrahman Tarek
+ * @class ToplogyAPI
+ */
 class TopologyAPI {
+  /**
+   * TopologyAPI class constuctor
+   * @constructor 
+   * @author Abdelrahman Tarek
+   * @returns {void}
+   */
   constructor() {
+    /**
+     * stor topologies in memory
+     * @author Abdelrahman Tarek
+     * @type Array
+     */
     this.topologies = []
   }
 
+  /**
+   * Get topology by ID
+   * @author Abdelrahman Tarek
+   * @param {String} id 
+   * @returns {Object}
+   */
   getTopology(id) {
     const result = this.topologies.filter(topology => topology.id === id);
 
@@ -20,6 +43,12 @@ class TopologyAPI {
     return result[0];
   }
 
+  /**
+   * Read Json from disk
+   * @author Abdelrahman Tarek
+   * @param {String} fileName 
+   * @returns {Object}
+   */
   async readJson(fileName) {
     const data = await readFile(path.resolve() + `/${fileName}.json`);
     const topology = JSON.parse(data);
@@ -29,6 +58,12 @@ class TopologyAPI {
     return topology;
   }
 
+  /**
+   * Write Json to disk
+   * @author Abdelrahman Tarek
+   * @param {String} id 
+   * @returns {Object}
+   */
   async writeJson(id) {
     const topology = this.getTopology(id);
 
@@ -41,11 +76,21 @@ class TopologyAPI {
     return topology;
   }
 
+  /**
+   * return all topologies in memory
+   * @author Abdelrahman Tarek
+   * @returns {Array<Object>}
+   */
   async queryTopologies() {
-    this.topologies.forEach(logger.info);
     return this.topologies;
   }
 
+  /**
+   * Delete topology from memory
+   * @author Abdelrahman Tarek
+   * @param {String} id 
+   * @returns {Object}
+   */
   async deleteTopology(id) {
     const deletedTopology = this.getTopology(id);
 
@@ -57,6 +102,12 @@ class TopologyAPI {
     return deletedTopology;
   }
 
+  /**
+   * return all devices of a topology with the given id
+   * @author Abdelrahman Tarek
+   * @param {String} id 
+   * @returns {Array<Object>}
+   */
   async queryDevices(id) {
     const topology = this.getTopology(id);
 
@@ -68,6 +119,13 @@ class TopologyAPI {
     return components;
   }
 
+  /**
+   * return all devices of a topology with the given id and netlistNodeID
+   * @author Abdelrahman Tarek
+   * @param {String} id 
+   * @param {String} netlistNodeID 
+   * @returns {Array<Object>}
+   */
   async queryDevicesWithNetlistNode(id, netlistNodeID) {
     const topology = this.getTopology(id);
 
