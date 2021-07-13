@@ -11,11 +11,13 @@ class TopologyAPI {
     this.topologies = []
   }
 
-  getTopology(filter) {
-    if (this.topologies.length == 0)
+  getTopology(id) {
+    const result = this.topologies.filter(topology => topology.id === id);
+
+    if (result.length == 0)
       return null;
 
-    return this.topologies.filter(filter)[0];
+    return result[0];
   }
 
   async readJson(fileName) {
@@ -28,7 +30,7 @@ class TopologyAPI {
   }
 
   async writeJson(id) {
-    const topology = this.getTopology({ id });
+    const topology = this.getTopology(id);
 
     if (!topology) {
       logger.error(`Topology with ID = ${id} is not found`);
@@ -41,9 +43,20 @@ class TopologyAPI {
   }
 
   async queryTopologies() {
-    console.log(this.topologies);
     this.topologies.forEach(logger.info);
     return this.topologies;
+  }
+
+  async deleteTopology(id) {
+    const deletedTopology = this.getTopology(id);
+
+    if (!deletedTopology) {
+      logger.error(`Topology with ID = ${id} is not found`);
+      return null;
+    }
+
+    this.topologies = this.topologies.filter(topology => topology.id !== id);
+    return deletedTopology;
   }
 }
 
@@ -52,6 +65,7 @@ async function test() {
 
   await obj.readJson('topology');
   await obj.queryTopologies();
+  await obj.deleteTopology("top1");
 }
 
 test();
