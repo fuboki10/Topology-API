@@ -17,7 +17,5 @@
     "url": "https://github.com/fuboki10/Topology-API/issues"
   },
   "homepage": "https://github.com/fuboki10/Topology-API#readme",
-  "dependencies": {
-    "winston": "^3.3.3"
-  }
+  "dependencies": {}
 }

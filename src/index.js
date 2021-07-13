@@ -33,7 +33,6 @@ class TopologyAPI {
     const topology = this.getTopology(id);
 
     if (!topology) {
-      logger.error(`Topology with ID = ${id} is not found`);
       return null;
     }
 
@@ -51,12 +50,46 @@ class TopologyAPI {
     const deletedTopology = this.getTopology(id);
 
     if (!deletedTopology) {
-      logger.error(`Topology with ID = ${id} is not found`);
       return null;
     }
 
     this.topologies = this.topologies.filter(topology => topology.id !== id);
     return deletedTopology;
+  }
+
+  async queryDevices(id) {
+    const topology = this.getTopology(id);
+
+    if (!topology) {
+      return null;
+    }
+
+    const { components } = topology;
+    return components;
+  }
+
+  async queryDevicesWithNetlistNode(id, netlistNodeID) {
+    const topology = this.getTopology(id);
+
+    if (!topology) {
+      return null;
+    }
+
+    const { components } = topology;
+
+    const result = [];
+
+    components.forEach(component => {
+
+      for (const netlistNode of Object.values(component.netlist)) {
+        if (netlistNode === netlistNodeID) {
+          result.push(component);
+          break;
+        }
+      }
+    });
+
+    return result;
   }
 }
 
