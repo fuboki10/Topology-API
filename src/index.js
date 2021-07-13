@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const logger = require('./logger');
 const promisify = require('util').promisify;
 
 const readFile = promisify(fs.readFile);
@@ -160,3 +159,6 @@ async function test() {
 }
 
 test();
+
+
+module.exports = TopologyAPI;
